@@ -1,0 +1,164 @@
+{
+    "modules": [
+      {
+        "id": "a00bce63-076e-49a7-9673-f865f7f39284",
+        "type": "SetLoggingBehavior",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "e1a8fb59-c51e-4e46-a0b0-045385a4043c"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "LoggingBehavior",
+            "value": "Enable"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 150,
+            "y": 171
+          }
+        }
+      },
+      {
+        "id": "e1a8fb59-c51e-4e46-a0b0-045385a4043c",
+        "type": "SetRecordingBehavior",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "18599dd4-039b-417d-bf8d-4607b24f307c"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "RecordingBehaviorOption",
+            "value": "Enable"
+          },
+          {
+            "name": "RecordingParticipantOption",
+            "value": "Both"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 406,
+            "y": 177
+          }
+        }
+      },
+      {
+        "id": "18599dd4-039b-417d-bf8d-4607b24f307c",
+        "type": "SetQueue",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "eaa7534d-44c9-4e59-b820-1e2bf5036b42"
+          },
+          {
+            "condition": "Error",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Queue",
+            "value": "arn:aws:connect:region:000000000000:instance/xxx/queue/yyy",
+            "namespace": null,
+            "resourceName": "BasicQueue"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 648,
+            "y": 179
+          },
+          "useDynamic": false,
+          "queue": {
+            "id": "arn:aws:connect:region:000000000000:instance/xxx/queue/yyy",
+            "text": "BasicQueue"
+          }
+        }
+      },
+      {
+        "id": "eaa7534d-44c9-4e59-b820-1e2bf5036b42",
+        "type": "Transfer",
+        "branches": [
+          {
+            "condition": "AtCapacity",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          },
+          {
+            "condition": "Error",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          }
+        ],
+        "parameters": [],
+        "metadata": {
+          "position": {
+            "x": 895,
+            "y": 49
+          },
+          "useDynamic": false,
+          "queue": null
+        },
+        "target": "Queue"
+      },
+      {
+        "id": "550ce380-7899-4a4b-9efb-4650291e2b98",
+        "type": "PlayPrompt",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "bd521c6a-143e-44a0-a214-7e682df352d3"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Text",
+            "value": "An error ocurred. Goodbye.",
+            "namespace": null
+          },
+          {
+            "name": "TextToSpeechType",
+            "value": "text"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 1146,
+            "y": 326
+          },
+          "useDynamic": false
+        }
+      },
+      {
+        "id": "bd521c6a-143e-44a0-a214-7e682df352d3",
+        "type": "Disconnect",
+        "branches": [],
+        "parameters": [],
+        "metadata": {
+          "position": {
+            "x": 1397,
+            "y": 339
+          }
+        }
+      }
+    ],
+    "version": "1",
+    "type": "contactFlow",
+    "start": "a00bce63-076e-49a7-9673-f865f7f39284",
+    "metadata": {
+      "entryPointPosition": {
+        "x": 75,
+        "y": 20
+      },
+      "snapToGrid": false,
+      "name": "enable-log-and-record",
+      "description": "enable contact flow log and call recording",
+      "type": "contactFlow",
+      "status": "published",
+      "hash": "5fd170fecc191332b93c9f3ef750f1e072d5be01d3f183827c1c580817783ea2"
+    }
+}

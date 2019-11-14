@@ -1,0 +1,226 @@
+{
+    "modules": [
+      {
+        "id": "bd521c6a-143e-44a0-a214-7e682df352d3",
+        "type": "Disconnect",
+        "branches": [],
+        "parameters": [],
+        "metadata": {
+          "position": {
+            "x": 1588,
+            "y": 444
+          }
+        }
+      },
+      {
+        "id": "18599dd4-039b-417d-bf8d-4607b24f307c",
+        "type": "SetQueue",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "eaa7534d-44c9-4e59-b820-1e2bf5036b42"
+          },
+          {
+            "condition": "Error",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Queue",
+            "value": "arn:aws:connect:region:000000000000:instance/xxx/queue/yyy",
+            "namespace": null
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 797,
+            "y": 188
+          },
+          "useDynamic": false,
+          "queue": {
+            "id": "arn:aws:connect:region:000000000000:instance/xxx/queue/yyy",
+            "text": "BasicQueue",
+            "arn": null,
+            "metricDetail": null
+          }
+        }
+      },
+      {
+        "id": "eaa7534d-44c9-4e59-b820-1e2bf5036b42",
+        "type": "CustomerInQueue",
+        "branches": [
+          {
+            "condition": "AtCapacity",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          },
+          {
+            "condition": "Error",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          }
+        ],
+        "parameters": [],
+        "metadata": {
+          "position": {
+            "x": 1087,
+            "y": 190
+          },
+          "useDynamic": false,
+          "queue": null
+        }
+      },
+      {
+        "id": "dcffdcf5-cef2-41ac-ac60-7027ab7289ed",
+        "type": "QueuePriority",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "18599dd4-039b-417d-bf8d-4607b24f307c"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "AbsolutePosition",
+            "value": 1
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 527,
+            "y": 68
+          },
+          "adjustUnit": null
+        }
+      },
+      {
+        "id": "550ce380-7899-4a4b-9efb-4650291e2b98",
+        "type": "PlayAudio",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "bd521c6a-143e-44a0-a214-7e682df352d3"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Text",
+            "value": "An error ocurred. Goodbye.",
+            "namespace": null
+          },
+          {
+            "name": "TextToSpeechType",
+            "value": "text"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 1352,
+            "y": 443
+          },
+          "useDynamic": false
+        }
+      },
+      {
+        "id": "d77945a2-d191-4b70-a79e-3669bb1398c7",
+        "type": "QueuePriority",
+        "branches": [
+          {
+            "condition": "Success",
+            "transition": "18599dd4-039b-417d-bf8d-4607b24f307c"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "TimeOffset",
+            "value": 600
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 529,
+            "y": 245
+          },
+          "adjustUnit": "minutes"
+        }
+      },
+      {
+        "id": "309f9d63-0979-4342-bfd5-b3f07483eb6d",
+        "type": "PlayAudioAndFetchInput",
+        "branches": [
+          {
+            "condition": "Evaluate",
+            "conditionType": "Equals",
+            "conditionValue": "1",
+            "transition": "dcffdcf5-cef2-41ac-ac60-7027ab7289ed"
+          },
+          {
+            "condition": "Evaluate",
+            "conditionType": "Equals",
+            "conditionValue": "2",
+            "transition": "d77945a2-d191-4b70-a79e-3669bb1398c7"
+          },
+          {
+            "condition": "NoMatch",
+            "transition": "d77945a2-d191-4b70-a79e-3669bb1398c7"
+          },
+          {
+            "condition": "Error",
+            "transition": "550ce380-7899-4a4b-9efb-4650291e2b98"
+          },
+          {
+            "condition": "Timeout",
+            "transition": "d77945a2-d191-4b70-a79e-3669bb1398c7"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Text",
+            "value": "This flow demonstrates changing the priority of an individual contact in the queue. Press 1 to move to the front of the queue or press 2 to move behind existing  contacts already in queue.",
+            "namespace": null
+          },
+          {
+            "name": "TextToSpeechType",
+            "value": "text"
+          },
+          {
+            "name": "Timeout",
+            "value": "8"
+          },
+          {
+            "name": "MaxDigits",
+            "value": "1"
+          }
+        ],
+        "metadata": {
+          "position": {
+            "x": 228,
+            "y": 62
+          },
+          "conditionMetadata": [
+            {
+              "id": "1491fc63-5c35-4171-bd71-1469e2d7f737",
+              "value": "1"
+            },
+            {
+              "id": "1e9be780-3f75-4ffe-ba05-43bc6fc6135b",
+              "value": "2"
+            }
+          ],
+          "useDynamic": false
+        }
+      }
+    ],
+    "version": "1",
+    "start": "309f9d63-0979-4342-bfd5-b3f07483eb6d",
+    "metadata": {
+      "entryPointPosition": {
+        "x": 75,
+        "y": 20
+      },
+      "name": "Sample customer queue priority",
+      "description": "Demonstrates how to adjust a customer's position in a queue.",
+      "type": "contactFlow",
+      "status": "published",
+      "hash": "2d011c8441b4016e813285aa880d29270702e73ac274687ee853fd174a9e0bfc"
+    }
+  }
